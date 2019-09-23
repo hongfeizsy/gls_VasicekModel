@@ -26,5 +26,8 @@
     <ClInclude Include="MCFunctions_MeanReversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MCFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
