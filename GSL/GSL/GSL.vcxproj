@@ -72,15 +72,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\Hongfei\Desktop\Work\cpp\Packages\boost_1_69_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Hongfei\Desktop\Work\cpp\Packages\boost_1_69_0\lib64-msvc-14.1;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\Hongfei\Desktop\Work\cpp\Packages\boost_1_69_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Hongfei\Desktop\Work\cpp\Packages\boost_1_69_0\lib64-msvc-14.1;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\Hongfei\Desktop\Work\cpp\Packages\boost_1_69_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Hongfei\Desktop\Work\cpp\Packages\boost_1_69_0\lib64-msvc-14.1;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\Hongfei\Desktop\Work\cpp\Packages\boost_1_69_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Hongfei\Desktop\Work\cpp\Packages\boost_1_69_0\lib64-msvc-14.1;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -155,7 +163,20 @@
   <ItemGroup>
     <ClCompile Include="GSL.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MCFunctions_MeanReversion.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets" Condition="Exists('..\packages\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets'))" />
+  </Target>
 </Project>
