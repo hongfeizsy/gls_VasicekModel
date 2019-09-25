@@ -9,12 +9,23 @@ void quickTest() {
 	double Y0 = 109;
 	gsl_vector* Y = generateMCPath_MeanReversion(Y0, kappa, theta, sigma, startTime, endTime, deltaT, seed);
 	
+	gsl_vector* initialGuess = gsl_vector_alloc(3);
+	gsl_vector_set(initialGuess, 0, 0.1);
+	gsl_vector_set(initialGuess, 1, 82);
+	gsl_vector_set(initialGuess, 2, 0.1);
+	Inputs_MR* inputs_ptr = new Inputs_MR;
+	inputs_ptr->deltaT = deltaT;
+	inputs_ptr->Y = Y;
+	//search_minimum(inputs_ptr, )
+	delete inputs_ptr;
 }
 
 
 int main()
 {
-	unsigned long seed = 123;
-
+	quickTest();
+	
 	return 0;
 }
+
+
