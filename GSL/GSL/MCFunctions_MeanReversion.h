@@ -66,7 +66,7 @@ void search_minimum(myStruct params, double(*my_func)(const gsl_vector*, void*),
 	minex_func.params = params;
 
 	s = gsl_multimin_fminimizer_alloc(T, initialGuess->size);
-	gsl_multimin_fmin_set(s, &minex_func, x, ss);
+	gsl_multimin_fminimizer_set(s, &minex_func, x, ss);
 
 	do
 	{
@@ -79,12 +79,41 @@ void search_minimum(myStruct params, double(*my_func)(const gsl_vector*, void*),
 		if (status == GSL_SUCCESS) {
 			printf("Converged to minimum at\n");
 		}
-		print("%5d %10.3e %10.3e f() = %7.3f size = %.3f\n", iter, gsl_vector_get(s->x, 0), gsl_vector_get(s->x, 1), gsl_vector_get(s->x, 2), s->fval, size);
+		printf("%5d %10.3e %10.3e f() = %7.3f size = %.3f\n", iter, gsl_vector_get(s->x, 0), gsl_vector_get(s->x, 1), gsl_vector_get(s->x, 2), s->fval, size);
 	} while (status == GSL_CONTINUE && iter < 100);
 
 	gsl_vector_free(x);
 	gsl_vector_free(ss);
-	gsl_multimin_fminmizer_free(s);
+	gsl_multimin_fminimizer_free(s);
 }
 
+
+double logDensityFunc_MeanReversion(double ytp1, double yt, double deltaT, double kappa, double theta, double sigma) {
+	return -(ytp1 - yt * (1 - kappa * deltaT) - kappa * theta * deltaT) * (ytp1 - yt * (1 - kappa * deltaT) - kappa * theta * deltaT) / (2 * sigma * sigma * yt * deltaT) \
+		- 0.5 * log(2 * M_PI) - log(sigma) * 0.5 * log(yt * deltaT);
+}
+
+
+double generateLikelihoodFunction_MeanReversion(const gsl_vector* Y, const double& deltaT, const double& kappa, const double& theta, const double& sigma) {
+	double res = 0;
+	for (int i = 0; i != Y->size - 1; i++) {
+		res += logDensityFunc_MeanReversion(gsl_vector_get(Y, i + 1), gsl_vector_get(Y, i), deltaT, kappa, theta, sigma);
+	}
+
+	return res;
+}
+
+
+double my_func_MeanReversion(const gsl_vector* variables, void* params) {
+	double x, y, z, deltaT;
+	Inputs_MR* inputs = (Inputs_MR*)params;
+
+	x = gsl_vector_get(variables, 0);
+	y = gsl_vector_get(variables, 1);
+	z = gsl_vector_get(variables, 2);
+	deltaT = inputs->deltaT;
+	gsl_vector* Y = inputs->Y;
+
+	return -generateLikelihoodFunction_MeanReversion(Y, deltaT, x, y, z);
+}
 

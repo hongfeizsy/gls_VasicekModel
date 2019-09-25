@@ -3,6 +3,7 @@
 #include <gsl/gsl_blas.h>
 #include "MCFunctions_MeanReversion.h"
 
+
 void quickTest() {
 	unsigned long seed = 123;
 	double kappa = 0.05, theta = 80, sigma = 0.15, deltaT = 1.0 / 252, startTime = 0, endTime = 300;
@@ -16,7 +17,7 @@ void quickTest() {
 	Inputs_MR* inputs_ptr = new Inputs_MR;
 	inputs_ptr->deltaT = deltaT;
 	inputs_ptr->Y = Y;
-	//search_minimum(inputs_ptr, )
+	search_minimum(inputs_ptr, my_func_MeanReversion, initialGuess);
 	delete inputs_ptr;
 }
 
@@ -24,8 +25,5 @@ void quickTest() {
 int main()
 {
 	quickTest();
-	
 	return 0;
 }
-
-
