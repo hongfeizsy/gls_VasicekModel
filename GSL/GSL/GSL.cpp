@@ -9,11 +9,11 @@ void quickTest() {
 	double kappa = 0.05, theta = 80, sigma = 0.15, deltaT = 1.0 / 252, startTime = 0, endTime = 300;
 	double Y0 = 109;
 	gsl_vector* Y = generateMCPath_MeanReversion(Y0, kappa, theta, sigma, startTime, endTime, deltaT, seed);
-	
+
 	gsl_vector* initialGuess = gsl_vector_alloc(3);
 	gsl_vector_set(initialGuess, 0, 0.1);
 	gsl_vector_set(initialGuess, 1, 82);
-	gsl_vector_set(initialGuess, 2, 0.1);
+	gsl_vector_set(initialGuess, 2, 0.2);
 	Inputs_MR* inputs_ptr = new Inputs_MR;
 	inputs_ptr->deltaT = deltaT;
 	inputs_ptr->Y = Y;

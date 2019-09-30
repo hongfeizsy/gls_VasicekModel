@@ -17,7 +17,7 @@ gsl_vector* generateRandomNumbers(unsigned long seed, size_t size) {
 
 
 double YtFunction_MeanReversion(double Yt, double kappa, double theta, double sigma, double deltaT, double BM) {
-	return Yt * (1 - kappa * deltaT) + kappa * theta + sigma * sqrt(Yt * deltaT) * BM;
+	return Yt * (1 - kappa * deltaT) + kappa * theta * deltaT + sigma * sqrt(deltaT) * BM;
 }
 
 
@@ -79,7 +79,8 @@ void search_minimum(myStruct params, double(*my_func)(const gsl_vector*, void*),
 		if (status == GSL_SUCCESS) {
 			printf("Converged to minimum at\n");
 		}
-		printf("%5d %10.3e %10.3e f() = %7.3f size = %.3f\n", iter, gsl_vector_get(s->x, 0), gsl_vector_get(s->x, 1), gsl_vector_get(s->x, 2), s->fval, size);
+		printf("%10.3e, %10.3e, %10.3e, f() = %7.3f, size = %.3f, iter = %d\n", gsl_vector_get(s->x, 0), gsl_vector_get(s->x, 1), \
+			gsl_vector_get(s->x, 2), s->fval, size, iter);
 	} while (status == GSL_CONTINUE && iter < 100);
 
 	gsl_vector_free(x);
@@ -89,8 +90,8 @@ void search_minimum(myStruct params, double(*my_func)(const gsl_vector*, void*),
 
 
 double logDensityFunc_MeanReversion(double ytp1, double yt, double deltaT, double kappa, double theta, double sigma) {
-	return -(ytp1 - yt * (1 - kappa * deltaT) - kappa * theta * deltaT) * (ytp1 - yt * (1 - kappa * deltaT) - kappa * theta * deltaT) / (2 * sigma * sigma * yt * deltaT) \
-		- 0.5 * log(2 * M_PI) - log(sigma) * 0.5 * log(yt * deltaT);
+	return -(ytp1 - yt * (1 - kappa * deltaT) - kappa * theta * deltaT) * (ytp1 - yt * (1 - kappa * deltaT) - kappa * theta * deltaT) \
+		/ (2 * sigma * sigma * deltaT) - 0.5 * log(2 * M_PI) - log(sigma * deltaT);
 }
 
 
